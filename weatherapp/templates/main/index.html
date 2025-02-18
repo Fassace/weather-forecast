@@ -1,0 +1,383 @@
+{% comment %} Chatgt code {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f4f4f4;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0077b6;
+            color: white;
+            padding: 15px 30px;
+        }
+
+        .left-links .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .right-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .right-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .right-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dark Mode Toggle */
+        #darkModeToggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* Dark Mode Styles */
+        .dark-mode {
+            background-color: #222;
+            color: #fff;
+        }
+
+        .dark-mode .navbar {
+            background-color: #333;
+        }
+
+        .dark-mode .right-links a,
+        .dark-mode #darkModeToggle {
+            color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 600px; /* Increased width */
+            margin: auto;
+            padding: 30px;
+            background: white;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        input, button {
+            padding: 12px;
+            margin: 12px 0;
+            width: 90%; /* Wider input and button */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .weather-info {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        .weather-icon {
+            width: 100px; /* Slightly larger icon */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="left-links">
+            <a href="/" class="logo">Fasace Tech</a>
+        </div>
+        <div class="right-links">
+            <a href="https://openweathermap.org/" target="_blank">OpenWeather - Get Your API </a>
+            <button id="darkModeToggle">🌙</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Weather Desktop App</h2>
+        <h5>Using Python Language and Django Framework </p>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="city" placeholder="Enter state here" required>
+            <button type="submit">Get Weather</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if data %}
+            <div class="weather-info">
+                <h3>{{ data.city }}, {{ data.country_code }}</h3>
+                <p><strong>Temperature:</strong> {{ data.temp }}</p>
+                <p><strong>Pressure:</strong> {{ data.pressure }}</p>
+                <p><strong>Humidity:</strong> {{ data.humidity }}</p>
+                <p><strong>Condition:</strong> {{ data.main }} ({{ data.description }})</p>
+                <img src="{{ data.icon }}" alt="Weather Icon" class="weather-icon">
+                <p><strong>Coordinates:</strong> {{ data.coordinate }}</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Dark Mode Toggle Script
+        const toggle = document.getElementById("darkModeToggle");
+        toggle.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+        });
+    </script>
+
+</body>
+</html>
+
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.5.3/cerulean/bootstrap.min.css"
+        integrity="sha512-dQLT/B7byn2LjN/DN4zeBKpwGV6qbidV0XiMRWQOL7TGrV7FkZFldkGG+DGMU+CQnMTcRZlUI7GMWt1j6akNew=="
+        crossorigin="anonymous" />
+    <title>Weather App - Django</title>
+    <style>
+        body.dark-mode {
+            background-color: #121212;
+            color: white;
+        }
+
+        .dark-mode .card {
+            background-color: #1e1e1e;
+            color: white;
+        }
+
+        .dark-mode .badge {
+            background-color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="text-center mt-4">Weather App 🌦️</h1>
+
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+        <div class="container">
+            <a href="{% url 'home' %}" class="navbar-brand">Weather App 
+                <span style="color: rgb(39, 117, 161);"><strong>- Django Framework</strong></span>
+            </a>
+            <a href="https://openweathermap.org" class="navbar-tech">OpenWeather - Get Your API</a>
+        </div>
+    </div>
+
+    <br /><br /><br>
+
+    <div id="jumbotron" class="jumbotron text-center">
+        <h1 class="display-5">Hurray! </h1>
+        <h5>Using Python and Django Framework</h5>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <form method="post" action="{% url 'home' %}" class="col-md">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" class="form-control" name="city" placeholder="Enter city name..." required>
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-dark">Search</button>
+                </div>
+            </div>
+        </form>
+        <button id="toggleDarkMode" class="btn btn-secondary ml-2">🌙 Dark Mode</button>
+    </nav>
+
+    <br><br>
+
+    {% if country_code %}
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
+            <div class="card text-white bg-light mb-6">
+                <div class="card-body">
+                    <h4><span class="badge badge-primary">Country Code:</span> {{ country_code }}</h4>
+                    <h4><span class="badge badge-primary">Coordinates [Lon, Lat]:</span> {{ coordinate }}</h4>
+
+                    <h4>
+                        <span class="badge badge-primary">Temperature:</span> 
+                        <span id="tempValue">{{ temp }}</span> °<span id="unit">C</span>
+                    </h4>
+
+                    <h4><span class="badge badge-primary">Pressure:</span> {{ pressure }}</h4>
+                    <h4><span class="badge badge-primary">Humidity:</span> {{ humidity }}</h4>
+                    <h4><span class="badge badge-primary">Weather:</span> {{ main }}</h4>
+                    <h4><span class="badge badge-primary">Description:</span> {{ description }}</h4>
+                    
+                    <h4>
+                        <span class="badge badge-primary">Forecast:</span>
+                        <img src="http://openweathermap.org/img/w/{{ icon }}.png" alt="Weather Icon" style="width:70px">
+                    </h4>
+
+                    <button id="toggleUnit" class="btn btn-sm btn-info mt-2">Switch to °F</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="alert alert-danger text-center mt-4">
+        {{ error }}
+    </div>
+    {% endif %}
+
+
+    <!-- Debugging Section -->
+    <h2>Weather Information:</h2>
+    <pre>{{ country_code }}</pre>
+    <pre>{{ coordinate }}</pre>
+    <pre>{{ temp }}</pre>
+    <pre>{{ pressure }}</pre>
+    <pre>{{ humidity }}</pre>
+    <pre>{{ main }}</pre>
+    <pre>{{ description }}</pre>
+
+    <script>
+        // 🌙 Dark Mode Toggle
+        const darkModeToggle = document.getElementById("toggleDarkMode");
+        darkModeToggle.addEventListener("click", function () {
+            document.body.classList.toggle("dark-mode");
+        });
+
+        // 🌡️ Unit Toggle (Celsius <-> Fahrenheit)
+        const toggleUnit = document.getElementById("toggleUnit");
+        let tempValue = document.getElementById("tempValue");
+        let unit = document.getElementById("unit");
+        let isCelsius = true;
+        
+        toggleUnit.addEventListener("click", function () {
+            let temp = parseFloat(tempValue.innerText);
+            if (isCelsius) {
+                temp = (temp * 9/5) + 32;
+                unit.innerText = "F";
+                toggleUnit.innerText = "Switch to °C";
+            } else {
+                temp = (temp - 32) * 5/9;
+                unit.innerText = "C";
+                toggleUnit.innerText = "Switch to °F";
+            }
+            tempValue.innerText = temp.toFixed(2);
+            isCelsius = !isCelsius;
+        });
+    </script>
+
+</body>
+
+</html>
+ {% endcomment %}
+
+
+
+
+
+
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.5.3/cerulean/bootstrap.min.css"
+        integrity="sha512-dQLT/B7byn2LjN/DN4zeBKpwGV6qbidV0XiMRWQOL7TGrV7FkZFldkGG+DGMU+CQnMTcRZlUI7GMWt1j6akNew=="
+        crossorigin="anonymous" />
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Hello world</h1>
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+        <div class="container">
+            <a href="../" class="navbar-brand">Weather App <span style="color: rgb(39, 117, 161);"> <strong> - Django
+                        Framework</strong>
+                </span> </a>
+            <a href="https://openweathermap.org" class="navbar-tech">OpenWeather - Get Your API</a>
+        </div>
+    </div>
+
+    <br /><br /> <br>
+    <div id="jumbotron" class="jumbotron" style="text-align: center; margin-top:-50px">
+        <h1 class="display-5">Huraay! </h1>
+        <h5>Using Python Language and Django Framework</h5>
+
+        <!-- <img src="{% static 'images/weather.png' %}" class="image" style="width:100px; margin-bottom:-50px; "> -->
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <form method="post" class="col-md">
+            {% csrf_token %}
+            <div class=" input-group">
+
+                <input type="text" class="form-control" name="city" placeholder="Choose Your City ...">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+            <form>
+    </nav>
+    <br> <br>
+    <div class="row">
+        {% if country_code and coordinate and temp and pressure and humidity %}
+        <div class="col d-flex justify-content-center">
+            <div class=" card text-white bg-light mb-6">
+                <div class=" card-body">
+                    <h4><span class="badge badge-primary">Country Code :</span> {{country_code}}</h4>
+                    <h4><span class="badge badge-primary">Coordinates [X,Y] :</span> {{coordinate}}</h4>
+                    <h4><span class="badge badge-primary">Temperature in Celsius :</span> {{temp}}</h4>
+                    <h4><span class="badge badge-primary">Pressure :</span> {{pressure}} </h4>
+                    <h4><span class="badge badge-primary">Humidity : </span> {{humidity}}</h4>
+                    <!-- <h4><span class="badge badge-primary">Forecast : </span> {{main}} <img
+                            src="http://openweathermap.org/img/w/{{icon}}.png" alt="Image" style="width:70px"></h4> -->
+                    <h4><span class="badge badge-primary">Description : </span> {{description}}</h4>
+                </div>
+                {% endif %}
+            </div>
+</body>
+
+</html> {% endcomment %}
