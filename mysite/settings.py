@@ -35,7 +35,7 @@ API_KEY = os.getenv('API_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['weather-forecast-zkyw.onrender.com']
 
 
 # Application definition
